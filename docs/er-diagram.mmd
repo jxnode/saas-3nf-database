@@ -1,0 +1,56 @@
+
+erDiagram
+    TENANTS ||--o{ USERS : contains
+    USERS ||--o| USER_PROFILES : has
+    TENANTS ||--o{ PROJECTS : owns
+    USERS ||--o{ PROJECTS : creates
+    PROJECTS ||--o{ TASKS : contains
+    USERS ||--o{ USER_ROLES : assigned
+    ROLES ||--o{ USER_ROLES : grants
+
+    TENANTS {
+        bigint tenant_id PK
+        varchar tenant_name
+        varchar tenant_slug UK
+    }
+
+    USERS {
+        bigint user_id PK
+        bigint tenant_id FK
+        varchar email
+        varchar full_name
+    }
+
+    USER_PROFILES {
+        bigint user_id PK, FK
+        varchar phone
+        varchar job_title
+        varchar timezone
+    }
+
+    PROJECTS {
+        bigint project_id PK
+        bigint tenant_id FK
+        bigint created_by FK
+        varchar project_name
+    }
+
+    TASKS {
+        bigint task_id PK
+        bigint tenant_id FK
+        bigint project_id FK
+        varchar title
+        varchar status
+        varchar priority
+    }
+
+    ROLES {
+        bigint role_id PK
+        varchar role_name UK
+    }
+
+    USER_ROLES {
+        bigint user_id PK, FK
+        bigint role_id PK, FK
+        timestamptz assigned_at
+    }
